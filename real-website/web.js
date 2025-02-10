@@ -93,9 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fade out the tour container and hide it when done
     tourContainer.classList.add('fade-out');
     tourContainer.addEventListener('transitionend', () => {
-      tourContainer.style.display = 'none';
+      setTimeout(() => {
+        tourContainer.style.display = 'none';
+      }, 1000);
     }, { once: true });
     
+
     // After a short delay, scroll to the top and show the main container
     setTimeout(() => {
       window.scrollTo(0, 0);
