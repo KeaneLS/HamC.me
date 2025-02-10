@@ -69,9 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 120);
   }, 2000);
 
+  // Flag to prevent re-triggering animations during tour exit
+  let tourTransitioning = false;
+
   // Observer for tour sections to fade in as they enter view
   const tourObserverOptions = { threshold: 0.1, rootMargin: '-50px' };
   const tourObserver = new IntersectionObserver((entries) => {
+    if (tourTransitioning) return;
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
@@ -90,6 +94,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // "Enter Portfolio" button click event
   document.querySelector('.enter-portfolio').addEventListener('click', () => {
+    tourTransitioning = true;
+    tourObserver.disconnect();
+
+    // Immediately hide the about-text to prevent its reanimation
+    const aboutText = document.querySelector('.about-text');
+    if (aboutText) {
+      aboutText.style.transition = 'none';
+      aboutText.style.opacity = '0';
+    }
+    
+    // Immediately hide the scroll prompt to prevent its reanimation
+    const scrollPrompt = document.querySelector('.scroll-prompt');
+    if (scrollPrompt) {
+      scrollPrompt.style.transition = 'none';
+      scrollPrompt.style.opacity = '0';
+      scrollPrompt.style.display = 'none';
+    }
+
     // Fade out the tour container and hide it when done
     tourContainer.classList.add('fade-out');
     tourContainer.addEventListener('transitionend', () => {
@@ -98,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1000);
     }, { once: true });
     
-
     // After a short delay, scroll to the top and show the main container
     setTimeout(() => {
       window.scrollTo(0, 0);
