@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Your Portfolio</title>
+  <!-- Load Space Grotesk from Google Fonts (the only font used everywhere) -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="web.css">
+</head>
+<body>
+  <!-- Intro Section -->
+  <div class="intro-container">
+    <div class="intro-logo">
+      <img src="HamClogo.png" alt="Logo">
+    </div>
+    <div class="intro-text">
+      <span class="typing-text"></span>
+    </div>
+  </div>
+
+  <!-- Guided Tour Container -->
+  <div class="tour-container" style="display: none;">
+    <!-- About Section -->
+    <section class="tour-section about-tour">
+      <div class="tour-content">
+        <p class="about-text">
+          Hey, I'm Keane Lee-Shanok—though ever since I was ten years old, I've been known online as HamC.
+          I'm a programmer at heart, but under this alias, I've also explored my passion for content creation
+          in photo editing, 3D rendering, and video editing. These creative outlets have shaped me into the
+          programmer I am today, and I'm excited for you to see what I've built.
+        </p>
+        <p class="scroll-prompt"></p>
+      </div>
+    </section>
+
+    <!-- Tour Timeline Section Example -->
+    <section class="tour-section">
+      <div class="tour-content">
+        <h3>The Beginning - 2015</h3>
+        <div class="tour-media">
+          <div class="placeholder-img"></div>
+        </div>
+        <p>Your journey text here...</p>
+      </div>
+    </section>
+
+    <!-- (Add more tour sections as needed) -->
+
+    <!-- Tour End Section -->
+    <section class="tour-section tour-end">
+      <div class="tour-content">
+        <h3>Welcome to My Portfolio</h3>
+        <p>Now that you know my story, explore my work...</p>
+        <button class="enter-portfolio">Enter Portfolio</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Main Website Container -->
+  <div class="container" style="display: none;">
+    <!-- Landing Section: Header + Gallery -->
+    <section class="landing-section">
+      <!-- Header -->
+      <header class="top-header-area">
+        <div class="logo-header" id="logo-btn">
+          <div class="logo">
+            <img src="HamClogo.png" alt="Logo">
+          </div>
+        </div>
+        <nav class="nav-menu">
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Thumbnails</a></li>
+            <li><a href="#">Videos</a></li>
+            <li><a href="#" id="contact-nav-link">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <!-- Scrolling Images Gallery -->
+      <div class="space2">
+      </div>
+      <div class="gallery-container">
+        <div class="gallery-row row-1">
+          <img src="one.jpg" alt="Background">
+          <img src="two.jpg" alt="Background">
+          <img src="three.jpg" alt="Background">
+          <img src="four.jpg" alt="Background">
+          <img src="five.jpg" alt="Background">
+          <img src="six.jpg" alt="Background">
+          <!-- Duplicate set for seamless scrolling -->
+          <img src="one.jpg" alt="Background">
+          <img src="two.jpg" alt="Background">
+          <img src="three.jpg" alt="Background">
+          <img src="four.jpg" alt="Background">
+          <img src="five.jpg" alt="Background">
+          <img src="six.jpg" alt="Background">
+        </div>
+        <div class="spacer"></div>
+        <div class="gallery-row row-2">
+          <img src="seven.jpg" alt="Background">
+          <img src="eight.jpg" alt="Background">
+          <img src="nine.jpg" alt="Background">
+          <img src="ten.jpg" alt="Background">
+          <img src="eleven.jpg" alt="Background">
+          <img src="twelve.jpg" alt="Background">
+          <!-- Duplicate set for seamless scrolling -->
+          <img src="seven.jpg" alt="Background">
+          <img src="eight.jpg" alt="Background">
+          <img src="nine.jpg" alt="Background">
+          <img src="ten.jpg" alt="Background">
+          <img src="eleven.jpg" alt="Background">
+          <img src="twelve.jpg" alt="Background">
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Footer (below the landing section) -->
+    <footer id="contact" class="contact-section">
+      <h2>Contact Me</h2>
+      <div class="contact-info">
+        <p>Email: your.email@example.com</p>
+        <p>Social Media:</p>
+        <div class="social-links">
+          <a href="#" class="social-link">YouTube</a>
+          <a href="#" class="social-link">Twitter</a>
+          <a href="#" class="social-link">Instagram</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="web.js"></script>
+</body>
+</html>

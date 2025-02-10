@@ -1,0 +1,181 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: white;
+    overflow-x: hidden;
+}
+
+/* Initial animation overlay */
+.animation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+}
+
+.typing-text {
+    color: #00a8ff;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #005a8c;
+    opacity: 0;
+    white-space: nowrap;
+}
+
+/* Header styles */
+header {
+    background-color: #f8f9fa;
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header button {
+    background: transparent;
+    border: 2px solid #00a8ff;
+    color: #00a8ff;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+header button:hover {
+    transform: scale(1.05);
+}
+
+/* Add to your header button styles */
+header button.active {
+    background-color: #00a8ff;
+    color: white;
+}
+
+/* Greeting section */
+.greeting {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 60px;
+}
+
+.greeting h1 {
+    color: #00a8ff;
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px #005a8c;
+    margin-bottom: 2rem;
+}
+
+.see-more {
+    background: none;
+    border: none;
+    color: #00a8ff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.see-more:hover {
+    transform: scale(1.1);
+}
+
+/* Projects section */
+.projects {
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    place-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.project-card button {
+    width: 300px;
+    height: 200px;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    padding: 0;
+    background: none;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100%;
+    background-color: #808080; /* Placeholder gray color */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.project-card button span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #00a8ff;
+    text-shadow: 2px 2px 4px #005a8c;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.project-card button:hover {
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+footer h2 {
+    color: #00a8ff;
+    text-shadow: 1px 1px 2px #005a8c;
+    margin-bottom: 1rem;
+}
+
+footer p {
+    color: #333;
+    font-size: 1.1rem;
+}
+
+/* Add these styles to your existing CSS */
+.page-content {
+    padding-top: 100px; /* To account for fixed header */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.page-content h1 {
+    color: #00a8ff;
+    text-shadow: 2px 2px 4px #005a8c;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
