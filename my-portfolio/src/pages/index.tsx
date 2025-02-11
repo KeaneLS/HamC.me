@@ -374,7 +374,7 @@ const Home: React.FC = () => {
               <img src="/logo.png" alt="Logo" className="tour-logo" />
               <div className="about-spacer"></div>
               <p className="about-text">
-                Hey, I'm Keane Lee-Shanok—though ever since I was ten years old, I've been known online as HamC.
+                Hey, I'm Keane Lee-Shanok—though for the past decade, I've been known online as HamC.
                 I'm a programmer at heart, but under this alias, I've also explored my passion for content creation
                 in photo editing, 3D rendering, and video editing. These creative outlets have shaped me into the
                 programmer I am today, and I'm excited for you to see what I've built.
