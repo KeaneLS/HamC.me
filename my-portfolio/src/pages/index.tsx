@@ -322,7 +322,7 @@ const Home: React.FC = () => {
         descEl.innerHTML = "";
       }
       const segments = [
-        { text: "Well, across two channel's I've amassed ", isNumber: false },
+        { text: "Well, across two channels I've amassed ", isNumber: false },
         { text: "38,012", isNumber: true, className: "subscriber-number" },
         { text: " subscribers and ", isNumber: false },
         { text: "13,046,787", isNumber: true, className: "view-number" },
