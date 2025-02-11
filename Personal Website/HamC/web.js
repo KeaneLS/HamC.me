@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tourTransitioning) return;
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        // For tour slides, also add "visible" to child images so they animate in.
+        entry.target.querySelectorAll('.tour-slide-image').forEach(img => {
+          img.classList.add('visible');
+        });
         // If this is the results section and animation hasn't started, trigger it.
         if (entry.target.classList.contains('tour-results') && !resultsAnimationStarted) {
           startResultsAnimation();
@@ -64,9 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
               introContainer.style.display = 'none';
               // Show the tour container
               tourContainer.style.display = 'block';
+              // Reset the tour logo (for replay)
+              const tourLogo = document.querySelector('.tour-logo');
+              if (tourLogo) {
+                tourLogo.style.display = '';
+              }
               const aboutText = document.querySelector('.about-text');
               aboutText.style.removeProperty('opacity');
               aboutText.classList.add('visible');
+              // Clear any previous results description
+              const resultsDesc = document.querySelector('.results-description');
+              if (resultsDesc) {
+                resultsDesc.innerHTML = "";
+              }
               // Type out the scroll prompt
               setTimeout(() => {
                 const scrollPrompt = document.querySelector('.scroll-prompt');
@@ -116,6 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollPrompt.textContent = '';
       scrollPrompt.style.display = '';
     }
+    // Clear results description on replay
+    const resultsDesc = document.querySelector('.results-description');
+    if (resultsDesc) {
+      resultsDesc.innerHTML = "";
+    }
 
     mainContainer.style.display = 'none';
     mainContainer.classList.remove('visible');
@@ -151,7 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.enter-portfolio').addEventListener('click', () => {
     tourTransitioning = true;
     tourObserver.disconnect();
-
+    // Hide the tour logo so it doesn't show on the main page.
+    const tourLogo = document.querySelector('.tour-logo');
+    if (tourLogo) {
+      tourLogo.style.display = 'none';
+    }
     const aboutText = document.querySelector('.about-text');
     if (aboutText) {
       aboutText.style.transition = 'none';
@@ -164,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollPrompt.style.display = 'none';
     }
 
+    // Smooth fade-out for the tour container (no bump)
     tourContainer.classList.add('fade-out');
     tourContainer.addEventListener('transitionend', () => {
       setTimeout(() => {
@@ -259,6 +283,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Helper function to type an array of segments sequentially.
+  function typeSegments(segments, callback) {
+    let segIndex = 0;
+    function typeNextSegment() {
+      if (segIndex >= segments.length) {
+        if (callback) callback();
+        return;
+      }
+      const seg = segments[segIndex];
+      const span = document.createElement('span');
+      if(seg.isNumber) { 
+        // Use the provided class name if available; otherwise default to subscriber-number
+        span.className = "number " + (seg.className ? seg.className : "subscriber-number");
+      }
+      document.querySelector('.results-description').appendChild(span);
+      let charIndex = 0;
+      const interval = setInterval(() => {
+        if (charIndex < seg.text.length) {
+          span.innerHTML += seg.text.charAt(charIndex);
+          charIndex++;
+        } else {
+          clearInterval(interval);
+          segIndex++;
+          setTimeout(typeNextSegment, 300);
+        }
+      }, 60);
+    }
+    typeNextSegment();
+  }
+
   // Start the results animation when the tour-results section comes into view.
   function startResultsAnimation() {
     // Typewriter effect for the results title.
@@ -273,31 +327,39 @@ document.addEventListener('DOMContentLoaded', () => {
       if (index === plainTitle.length) {
         clearInterval(titleInterval);
         titleEl.innerHTML = finalTitleHTML;
+        // Wait 500ms, then start typing the description from the very beginning (left to right)
+        setTimeout(() => {
+          startResultsDescription();
+        }, 500);
       }
-    }, 100);  // Slower interval
+    }, 100);
+  }
 
-    // Typewriter effect for the description.
+  // Typewriter effect for the results description using segmented approach.
+  function startResultsDescription() {
     const descEl = document.querySelector('.results-description');
-    const finalDescHTML = 'Well, across two channel\'s I\'ve amassed <span class="subscriber-count">' + initialSubscribers + '</span> subscribers and <span class="view-count">' + initialViews + '</span> views.';
-    const plainDesc = "Well, across two channel's I've amassed subscribers and views.";
-    descEl.textContent = "";
-    let dIndex = 0;
-    const descInterval = setInterval(() => {
-      descEl.textContent += plainDesc.charAt(dIndex);
-      dIndex++;
-      if (dIndex === plainDesc.length) {
-        clearInterval(descInterval);
-        descEl.innerHTML = finalDescHTML;
-        // Start the counters
-        subscriberInterval = setInterval(() => {
-          subscriberCount++;
-          document.querySelector('.subscriber-count').textContent = subscriberCount.toLocaleString();
-        }, 5000);
-        viewInterval = setInterval(() => {
-          viewCount++;
-          document.querySelector('.view-count').textContent = viewCount.toLocaleString();
-        }, 2000);
-      }
-    }, 60);  // Slower interval
+    descEl.innerHTML = "";
+    const segments = [
+      { text: "Well, across two channel's I've amassed ", isNumber: false },
+      { text: "38,012", isNumber: true, className: "subscriber-number" },
+      { text: " subscribers and ", isNumber: false },
+      { text: "13,046,787", isNumber: true, className: "view-number" },
+      { text: " views.", isNumber: false }
+    ];
+    typeSegments(segments, startLiveCounters);
+  }
+
+  // Start live counters after typing the results description.
+  function startLiveCounters() {
+    subscriberInterval = setInterval(() => {
+      subscriberCount++;
+      const subElem = document.querySelector('.subscriber-number');
+      if(subElem) subElem.textContent = subscriberCount.toLocaleString();
+    }, 2000); // every 2 seconds
+    viewInterval = setInterval(() => {
+      viewCount++;
+      const viewElem = document.querySelector('.view-number');
+      if(viewElem) viewElem.textContent = viewCount.toLocaleString();
+    }, 1000); // every 1 second
   }
 });

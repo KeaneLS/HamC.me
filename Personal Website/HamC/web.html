@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Your Portfolio</title>
-  <!-- Load Space Grotesk from Google Fonts (the only font used everywhere) -->
+  <!-- Load Space Grotesk -->
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="web.css">
 </head>
@@ -21,15 +21,18 @@
 
   <!-- Guided Tour Container -->
   <div class="tour-container" style="display: none;">
-    <!-- About Section (Original about text and scroll prompt) -->
+    <!-- About Section -->
     <section class="tour-section about-tour">
       <div class="tour-content">
+        <!-- New Tour Logo above about-text -->
+        <img src="logo.png" alt="Logo" class="tour-logo">
         <p class="about-text">
           Hey, I'm Keane Lee-Shanok—though ever since I was ten years old, I've been known online as HamC.
           I'm a programmer at heart, but under this alias, I've also explored my passion for content creation
           in photo editing, 3D rendering, and video editing. These creative outlets have shaped me into the
           programmer I am today, and I'm excited for you to see what I've built.
         </p>
+        <div class="scroll-prompt-spacing"></div>
         <p class="scroll-prompt"></p>
       </div>
     </section>
@@ -38,8 +41,10 @@
     <section class="tour-section tour-slide">
       <div class="tour-content">
         <h2 class="tour-title">Humble Beginnings</h2>
+        <!-- Updated to use .jpg file -->
+        <img src="beginnings.jpg" alt="Humble Beginnings" class="tour-slide-image">
         <p class="tour-description">
-          This was my old thumbnail style that I used when I was around 11 years old, and it's clear evidence that everyone starts somewhere! As you can see, I was no artist. However, this era of content creation taught me a lot. I would render my models using rigs and my own lighting fixtures in Blender, and it's thanks to this that I have the foundational understanding of Blender that I do now. Thankfully, this style didn't last too long...
+          This was my old thumbnail style that I used when I was around <strong class="highlight-blue">11 years old</strong>, and it's clear evidence that everyone starts somewhere! As you can see, I was no artist. However, this era of content creation taught me a lot. I would render my models using rigs and my own lighting fixtures in <strong class="highlight-blue">Blender</strong> and it's thanks to this that I have the foundational understanding of Blender that I do now. Thankfully, this style didn't last too long...
         </p>
       </div>
     </section>
@@ -47,8 +52,9 @@
     <section class="tour-section tour-slide">
       <div class="tour-content">
         <h2 class="tour-title">Finding My Groove</h2>
+        <img src="groove.webp" alt="Finding My Groove" class="tour-slide-image">
         <p class="tour-description">
-          This is where I started experimenting with making aesthetic looking text in Photoshop. Though I'd deem this style outdated for today's standards, this was pretty effective and I was getting my first couple thousands of views on my videos!
+          This is where I started experimenting with making aesthetic looking text in <strong class="highlight-blue">Photoshop</strong>. Though I'd deem this style outdated for today's standards, this was pretty effective and I was getting my first couple <strong class="highlight-blue">thousands</strong> of views on my videos!
         </p>
       </div>
     </section>
@@ -56,8 +62,10 @@
     <section class="tour-section tour-slide">
       <div class="tour-content">
         <h2 class="tour-title">Awkward Stage</h2>
+        <!-- Updated to use .jpg file -->
+        <img src="awkward.jpg" alt="Awkward Stage" class="tour-slide-image">
         <p class="tour-description">
-          I'd regained my interest in making Minecraft styled thumbnails for my videos, but there was just something... missing. At this time I was taking in game screenshots of my character and then adding effects in Photoshop, but something was off. I hadn't found my style just yet. However, as time went on, this was soon to change...
+          I'd regained my interest in making Minecraft styled thumbnails for my videos, but there was just something... missing. At this time I was taking in game screenshots of my character and then adding effects in <strong class="highlight-blue">Photoshop</strong>, but something was off. I hadn't found my style just yet. However, as time went on, this was soon to change...
         </p>
       </div>
     </section>
@@ -65,8 +73,9 @@
     <section class="tour-section tour-slide">
       <div class="tour-content">
         <h2 class="tour-title">Endgame</h2>
+        <img src="win.jpg" alt="Endgame" class="tour-slide-image">
         <p class="tour-description">
-          I did it, I found my modern style! Of course I'm always open to learning more and making my thumbnails even better, but this general style has stuck with me for quite some time, and has certainly performed the best on Youtube. Of course the process varies from thumbnail to thumbnail, but for the most part, I follow my same procedure. I render 3D images of Minecraft gameplay with Replaymod via Fabric and upscale them through FFmpeg for the most optimal Youtube thumbnail quality. Then I apply a series of blending effects in Photoshop and make any further adjustments in Paint.NET. I can confidently say that nowadays, it isn't just simple screenshots anymore!
+          I did it, I found my modern style! Of course I'm always open to learning more and making my thumbnails even better, but this general style has stuck with me for quite some time, and has certainly performed the best on Youtube. I render <strong class="highlight-blue">3D images</strong> of Minecraft gameplay with <strong class="highlight-blue">Replaymod</strong> via <strong class="highlight-blue">Fabric</strong> and upscale them through <strong class="highlight-blue">FFmpeg</strong> for the most optimal Youtube thumbnail quality. Then I apply a series of blending effects in <strong class="highlight-blue">Photoshop</strong> and make any further adjustments in <strong class="highlight-blue">Paint.NET</strong>. I can confidently say that nowadays, it isn't just simple screenshots anymore!
         </p>
       </div>
     </section>
@@ -76,12 +85,12 @@
       <div class="tour-content">
         <h2 class="results-title">But what are the <span class="highlight">results</span>?</h2>
         <p class="results-description">
-          Well, across two channel's I've amassed <span class="subscriber-count">38,012</span> subscribers and <span class="view-count">13,046,787</span> views.
+          <!-- Initially empty; will be typed letter-by-letter after title finishes -->
         </p>
       </div>
     </section>
 
-    <!-- Tour End Section: Welcome to My Portfolio -->
+    <!-- Tour End Section -->
     <section class="tour-section tour-end">
       <div class="tour-content">
         <h3>Welcome to My Portfolio</h3>
@@ -155,7 +164,7 @@
       </div>
     </section>
 
-    <!-- Contact Footer (below the landing section) -->
+    <!-- Contact Footer -->
     <footer id="contact" class="contact-section">
       <h2>Contact Me</h2>
       <div class="contact-info">

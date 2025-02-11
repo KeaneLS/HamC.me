@@ -1,14 +1,3 @@
-// Smooth scrolling for in-page links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-});
-
 document.addEventListener('DOMContentLoaded', () => {
   // Always start at the top
   window.scrollTo(0, 0);
@@ -23,19 +12,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleryRows = document.querySelectorAll('.gallery-row');
   const contactSection = document.querySelector('.contact-section');
 
+  // Global flag for gallery clickability (modal works only after fade in)
+  let galleryClickable = false;
+
+  // For results animation
+  let resultsAnimationStarted = false;
+  const initialSubscribers = 38012;
+  const initialViews = 13046787;
+  let subscriberCount = initialSubscribers;
+  let viewCount = initialViews;
+  let subscriberInterval;
+  let viewInterval;
+
   // Set up the observer for tour sections
   let tourTransitioning = false;
   const tourObserverOptions = { threshold: 0.1, rootMargin: '-50px' };
   const tourObserver = new IntersectionObserver((entries) => {
-    if (tourTransitioning) return;
     entries.forEach(entry => {
+      if (tourTransitioning) return;
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        const media = entry.target.querySelector('.tour-media');
-        if (media) {
-          setTimeout(() => {
-            media.classList.add('visible');
-          }, 500);
+        // For tour slides, also add "visible" to child images so they animate in.
+        entry.target.querySelectorAll('.tour-slide-image').forEach(img => {
+          img.classList.add('visible');
+        });
+        // If this is the results section and animation hasn't started, trigger it.
+        if (entry.target.classList.contains('tour-results') && !resultsAnimationStarted) {
+          startResultsAnimation();
+          resultsAnimationStarted = true;
         }
       }
     });
@@ -64,10 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
               introContainer.style.display = 'none';
               // Show the tour container
               tourContainer.style.display = 'block';
+              // Reset the tour logo (for replay)
+              const tourLogo = document.querySelector('.tour-logo');
+              if (tourLogo) {
+                tourLogo.style.display = '';
+              }
               const aboutText = document.querySelector('.about-text');
-              // Remove any inline opacity so that CSS transitions apply
               aboutText.style.removeProperty('opacity');
               aboutText.classList.add('visible');
+              // Clear any previous results description
+              const resultsDesc = document.querySelector('.results-description');
+              if (resultsDesc) {
+                resultsDesc.innerHTML = "";
+              }
               // Type out the scroll prompt
               setTimeout(() => {
                 const scrollPrompt = document.querySelector('.scroll-prompt');
@@ -90,25 +103,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
-  // Run the initial animation sequence
   runIntroAnimation();
 
   // Function to replay the entire intro and tour animation sequence exactly as on first load
   function replayIntroAnimation() {
-    // Force scroll to top for consistency
     window.scrollTo(0, 0);
-
-    // Reset the intro container
     introContainer.style.display = 'flex';
     introContainer.classList.remove('fade-out');
     typingText.textContent = '';
     typingText.style.opacity = '0';
     typingText.style.transform = 'translateY(20px)';
 
-    // Reset the tour container and its children
     tourContainer.classList.remove('fade-out');
     tourContainer.style.display = 'none';
-    // Remove the "visible" and "scroll" classes from each tour section (so their animations fire again)
     document.querySelectorAll('.tour-section').forEach(section => {
       section.classList.remove('visible');
     });
@@ -123,40 +130,51 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollPrompt.textContent = '';
       scrollPrompt.style.display = '';
     }
+    // Clear results description on replay
+    const resultsDesc = document.querySelector('.results-description');
+    if (resultsDesc) {
+      resultsDesc.innerHTML = "";
+    }
 
-    // Reset the main container and its sequential children
     mainContainer.style.display = 'none';
     mainContainer.classList.remove('visible');
     logoHeader.classList.remove('visible');
     navMenu.classList.remove('visible');
     galleryRows.forEach(row => {
       row.classList.remove('visible');
-      row.classList.remove('scroll'); // remove the scrolling animation class
+      row.classList.remove('scroll');
     });
     contactSection.classList.remove('visible');
 
-    // Reset the tourTransitioning flag and reattach observer to tour sections
+    galleryClickable = false;
+    resultsAnimationStarted = false;
+    clearInterval(subscriberInterval);
+    clearInterval(viewInterval);
+    subscriberCount = initialSubscribers;
+    viewCount = initialViews;
+
     tourTransitioning = false;
     document.querySelectorAll('.tour-section').forEach(section => {
       section.classList.remove('visible');
       tourObserver.observe(section);
     });
 
-    // Run the intro/tour animation again
     runIntroAnimation();
   }
 
-  // "About" navigation link click event to replay the entire tour animation sequence exactly as on first load
   document.getElementById('about-nav-link').addEventListener('click', (e) => {
     e.preventDefault();
     replayIntroAnimation();
   });
 
-  // "Enter Portfolio" button click event (for transitioning to the main page)
   document.querySelector('.enter-portfolio').addEventListener('click', () => {
     tourTransitioning = true;
     tourObserver.disconnect();
-
+    // Hide the tour logo so it doesn't show on the main page.
+    const tourLogo = document.querySelector('.tour-logo');
+    if (tourLogo) {
+      tourLogo.style.display = 'none';
+    }
     const aboutText = document.querySelector('.about-text');
     if (aboutText) {
       aboutText.style.transition = 'none';
@@ -169,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollPrompt.style.display = 'none';
     }
 
+    // Smooth fade-out for the tour container (no bump)
     tourContainer.classList.add('fade-out');
     tourContainer.addEventListener('transitionend', () => {
       setTimeout(() => {
@@ -182,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mainContainer.classList.remove('visible');
       requestAnimationFrame(() => {
         mainContainer.classList.add('visible');
-        // Sequential fade in: header, then nav, then gallery rows, then contact footer
         setTimeout(() => {
           logoHeader.classList.add('visible');
           setTimeout(() => {
@@ -205,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
               galleryRows.forEach(row => {
                 row.classList.add('scroll');
               });
+              galleryClickable = true;
             }, rowDelay * galleryRows.length + 1000);
           }, 500);
         }, 500);
@@ -212,15 +231,135 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 800);
   });
 
-  // Logo click: scroll to the top of the main page
   document.getElementById('logo-btn').addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // "Contact" navigation link: scroll to the contact footer
   document.getElementById('contact-nav-link').addEventListener('click', (e) => {
     e.preventDefault();
     contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  document.querySelectorAll('.gallery-row img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      if (!galleryClickable) return;
+      createModal(e.target.src);
+    });
+  });
+
+  function createModal(src) {
+    const modalOverlay = document.createElement('div');
+    modalOverlay.classList.add('modal-overlay');
+    
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    
+    const modalImageWrapper = document.createElement('div');
+    modalImageWrapper.classList.add('modal-image-wrapper');
+    
+    const modalImage = document.createElement('img');
+    modalImage.src = src;
+    modalImageWrapper.appendChild(modalImage);
+    
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('modal-close');
+    closeButton.textContent = 'Close';
+    
+    modalContent.appendChild(modalImageWrapper);
+    modalContent.appendChild(closeButton);
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+    
+    requestAnimationFrame(() => {
+      modalOverlay.classList.add('visible');
+    });
+    
+    closeButton.addEventListener('click', () => {
+      modalOverlay.classList.remove('visible');
+      modalOverlay.addEventListener('transitionend', () => {
+        modalOverlay.remove();
+      }, { once: true });
+    });
+  }
+
+  // Helper function to type an array of segments sequentially.
+  function typeSegments(segments, callback) {
+    let segIndex = 0;
+    function typeNextSegment() {
+      if (segIndex >= segments.length) {
+        if (callback) callback();
+        return;
+      }
+      const seg = segments[segIndex];
+      const span = document.createElement('span');
+      if(seg.isNumber) { 
+        // Use the provided class name if available; otherwise default to subscriber-number
+        span.className = "number " + (seg.className ? seg.className : "subscriber-number");
+      }
+      document.querySelector('.results-description').appendChild(span);
+      let charIndex = 0;
+      const interval = setInterval(() => {
+        if (charIndex < seg.text.length) {
+          span.innerHTML += seg.text.charAt(charIndex);
+          charIndex++;
+        } else {
+          clearInterval(interval);
+          segIndex++;
+          setTimeout(typeNextSegment, 300);
+        }
+      }, 60);
+    }
+    typeNextSegment();
+  }
+
+  // Start the results animation when the tour-results section comes into view.
+  function startResultsAnimation() {
+    // Typewriter effect for the results title.
+    const titleEl = document.querySelector('.results-title');
+    const finalTitleHTML = 'But what are the <span class="highlight">results</span>?';
+    const plainTitle = "But what are the results?";
+    titleEl.textContent = "";
+    let index = 0;
+    const titleInterval = setInterval(() => {
+      titleEl.textContent += plainTitle.charAt(index);
+      index++;
+      if (index === plainTitle.length) {
+        clearInterval(titleInterval);
+        titleEl.innerHTML = finalTitleHTML;
+        // Wait 500ms, then start typing the description from the very beginning (left to right)
+        setTimeout(() => {
+          startResultsDescription();
+        }, 500);
+      }
+    }, 100);
+  }
+
+  // Typewriter effect for the results description using segmented approach.
+  function startResultsDescription() {
+    const descEl = document.querySelector('.results-description');
+    descEl.innerHTML = "";
+    const segments = [
+      { text: "Well, across two channel's I've amassed ", isNumber: false },
+      { text: "38,012", isNumber: true, className: "subscriber-number" },
+      { text: " subscribers and ", isNumber: false },
+      { text: "13,046,787", isNumber: true, className: "view-number" },
+      { text: " views.", isNumber: false }
+    ];
+    typeSegments(segments, startLiveCounters);
+  }
+
+  // Start live counters after typing the results description.
+  function startLiveCounters() {
+    subscriberInterval = setInterval(() => {
+      subscriberCount++;
+      const subElem = document.querySelector('.subscriber-number');
+      if(subElem) subElem.textContent = subscriberCount.toLocaleString();
+    }, 2000); // every 2 seconds
+    viewInterval = setInterval(() => {
+      viewCount++;
+      const viewElem = document.querySelector('.view-number');
+      if(viewElem) viewElem.textContent = viewCount.toLocaleString();
+    }, 1000); // every 1 second
+  }
 });
