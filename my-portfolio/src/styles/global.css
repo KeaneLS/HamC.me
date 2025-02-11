@@ -526,6 +526,9 @@
   }
   
   .scroll-prompt-spacing {
-    height: 200px;
+    height: 180px;
   }
   
+  .about-spacer {
+    height: 20px;
+  }

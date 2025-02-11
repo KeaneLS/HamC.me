@@ -372,6 +372,7 @@ const Home: React.FC = () => {
           <section className="tour-section about-tour">
             <div className="tour-content">
               <img src="/logo.png" alt="Logo" className="tour-logo" />
+              <div className="about-spacer"></div>
               <p className="about-text">
                 Hey, I'm Keane Lee-Shanok—though ever since I was ten years old, I've been known online as HamC.
                 I'm a programmer at heart, but under this alias, I've also explored my passion for content creation
