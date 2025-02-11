@@ -13,6 +13,7 @@
   --text-light: #ffffff;
   --text-dark: #1a2b4c;
   --bg-light: #f8fafc;
+  --gallery-gap: 1rem;
 }
 
 body {
@@ -119,8 +120,10 @@ body {
 }
 .gallery-row {
   height: 50%; /* Each row takes half of the gallery container */
+  width: max-content;
   display: flex;
   flex-wrap: nowrap;
+  gap: var(--gallery-gap); /* Added gap between the two .inner containers */
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s ease, transform 1s ease;
@@ -129,14 +132,18 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+/* The inner wrapper holds one set of images; we duplicate it for seamless scrolling */
+.gallery-row .inner {
+  display: flex;
+  gap: 1rem;
+}
 .gallery-row img {
   width: auto;
-  height: 90%; /* Changed from 100% to 90% to make images slightly smaller */
+  height: 90%; /* Images are slightly smaller */
   border-radius: 12px;
   flex-shrink: 0;
   object-fit: cover;
-  margin-right: 1rem;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 /* Contact Footer */
@@ -198,7 +205,7 @@ body {
   z-index: 1000;
   transition: all 1.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-/* NEW: Fade-out for intro container */
+/* Fade-out for intro container */
 .intro-container.fade-out {
   opacity: 0;
   transform: scale(1.05) translateY(-20px);
@@ -389,11 +396,11 @@ body {
 /* Keyframes for infinite horizontal scrolling */
 @keyframes scrollRow1 {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
 }
 @keyframes scrollRow2 {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
 }
 .gallery-row.scroll.row-1 {
   animation: scrollRow1 90s linear infinite;
@@ -408,4 +415,3 @@ body {
 .space2 {
   height: 25px;
 }
-

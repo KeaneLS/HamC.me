@@ -1,3 +1,14 @@
+// Smooth scrolling for in-page links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // Always start at the top
   window.scrollTo(0, 0);
@@ -12,30 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleryRows = document.querySelectorAll('.gallery-row');
   const contactSection = document.querySelector('.contact-section');
 
-  // Global flag for gallery clickability (modal works only after fade in)
-  let galleryClickable = false;
-
-  // For results animation
-  let resultsAnimationStarted = false;
-  const initialSubscribers = 38012;
-  const initialViews = 13046787;
-  let subscriberCount = initialSubscribers;
-  let viewCount = initialViews;
-  let subscriberInterval;
-  let viewInterval;
-
   // Set up the observer for tour sections
   let tourTransitioning = false;
   const tourObserverOptions = { threshold: 0.1, rootMargin: '-50px' };
   const tourObserver = new IntersectionObserver((entries) => {
+    if (tourTransitioning) return;
     entries.forEach(entry => {
-      if (tourTransitioning) return;
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        // If this is the results section and animation hasn't started, trigger it.
-        if (entry.target.classList.contains('tour-results') && !resultsAnimationStarted) {
-          startResultsAnimation();
-          resultsAnimationStarted = true;
+        const media = entry.target.querySelector('.tour-media');
+        if (media) {
+          setTimeout(() => {
+            media.classList.add('visible');
+          }, 500);
         }
       }
     });
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
               // Show the tour container
               tourContainer.style.display = 'block';
               const aboutText = document.querySelector('.about-text');
+              // Remove any inline opacity so that CSS transitions apply
               aboutText.style.removeProperty('opacity');
               aboutText.classList.add('visible');
               // Type out the scroll prompt
@@ -89,19 +90,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
+  // Run the initial animation sequence
   runIntroAnimation();
 
   // Function to replay the entire intro and tour animation sequence exactly as on first load
   function replayIntroAnimation() {
+    // Force scroll to top for consistency
     window.scrollTo(0, 0);
+
+    // Reset the intro container
     introContainer.style.display = 'flex';
     introContainer.classList.remove('fade-out');
     typingText.textContent = '';
     typingText.style.opacity = '0';
     typingText.style.transform = 'translateY(20px)';
 
+    // Reset the tour container and its children
     tourContainer.classList.remove('fade-out');
     tourContainer.style.display = 'none';
+    // Remove the "visible" and "scroll" classes from each tour section (so their animations fire again)
     document.querySelectorAll('.tour-section').forEach(section => {
       section.classList.remove('visible');
     });
@@ -117,37 +124,35 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollPrompt.style.display = '';
     }
 
+    // Reset the main container and its sequential children
     mainContainer.style.display = 'none';
     mainContainer.classList.remove('visible');
     logoHeader.classList.remove('visible');
     navMenu.classList.remove('visible');
     galleryRows.forEach(row => {
       row.classList.remove('visible');
-      row.classList.remove('scroll');
+      row.classList.remove('scroll'); // remove the scrolling animation class
     });
     contactSection.classList.remove('visible');
 
-    galleryClickable = false;
-    resultsAnimationStarted = false;
-    clearInterval(subscriberInterval);
-    clearInterval(viewInterval);
-    subscriberCount = initialSubscribers;
-    viewCount = initialViews;
-
+    // Reset the tourTransitioning flag and reattach observer to tour sections
     tourTransitioning = false;
     document.querySelectorAll('.tour-section').forEach(section => {
       section.classList.remove('visible');
       tourObserver.observe(section);
     });
 
+    // Run the intro/tour animation again
     runIntroAnimation();
   }
 
+  // "About" navigation link click event to replay the entire tour animation sequence exactly as on first load
   document.getElementById('about-nav-link').addEventListener('click', (e) => {
     e.preventDefault();
     replayIntroAnimation();
   });
 
+  // "Enter Portfolio" button click event (for transitioning to the main page)
   document.querySelector('.enter-portfolio').addEventListener('click', () => {
     tourTransitioning = true;
     tourObserver.disconnect();
@@ -177,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mainContainer.classList.remove('visible');
       requestAnimationFrame(() => {
         mainContainer.classList.add('visible');
+        // Sequential fade in: header, then nav, then gallery rows, then contact footer
         setTimeout(() => {
           logoHeader.classList.add('visible');
           setTimeout(() => {
@@ -199,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
               galleryRows.forEach(row => {
                 row.classList.add('scroll');
               });
-              galleryClickable = true;
             }, rowDelay * galleryRows.length + 1000);
           }, 500);
         }, 500);
@@ -207,97 +212,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 800);
   });
 
+  // Logo click: scroll to the top of the main page
   document.getElementById('logo-btn').addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+  // "Contact" navigation link: scroll to the contact footer
   document.getElementById('contact-nav-link').addEventListener('click', (e) => {
     e.preventDefault();
     contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
-
-  document.querySelectorAll('.gallery-row img').forEach(img => {
-    img.addEventListener('click', (e) => {
-      if (!galleryClickable) return;
-      createModal(e.target.src);
-    });
-  });
-
-  function createModal(src) {
-    const modalOverlay = document.createElement('div');
-    modalOverlay.classList.add('modal-overlay');
-    
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
-    
-    const modalImageWrapper = document.createElement('div');
-    modalImageWrapper.classList.add('modal-image-wrapper');
-    
-    const modalImage = document.createElement('img');
-    modalImage.src = src;
-    modalImageWrapper.appendChild(modalImage);
-    
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('modal-close');
-    closeButton.textContent = 'Close';
-    
-    modalContent.appendChild(modalImageWrapper);
-    modalContent.appendChild(closeButton);
-    modalOverlay.appendChild(modalContent);
-    document.body.appendChild(modalOverlay);
-    
-    requestAnimationFrame(() => {
-      modalOverlay.classList.add('visible');
-    });
-    
-    closeButton.addEventListener('click', () => {
-      modalOverlay.classList.remove('visible');
-      modalOverlay.addEventListener('transitionend', () => {
-        modalOverlay.remove();
-      }, { once: true });
-    });
-  }
-
-  // Start the results animation when the tour-results section comes into view.
-  function startResultsAnimation() {
-    // Typewriter effect for the results title.
-    const titleEl = document.querySelector('.results-title');
-    const finalTitleHTML = 'But what are the <span class="highlight">results</span>?';
-    const plainTitle = "But what are the results?";
-    titleEl.textContent = "";
-    let index = 0;
-    const titleInterval = setInterval(() => {
-      titleEl.textContent += plainTitle.charAt(index);
-      index++;
-      if (index === plainTitle.length) {
-        clearInterval(titleInterval);
-        titleEl.innerHTML = finalTitleHTML;
-      }
-    }, 100);  // Slower interval
-
-    // Typewriter effect for the description.
-    const descEl = document.querySelector('.results-description');
-    const finalDescHTML = 'Well, across two channel\'s I\'ve amassed <span class="subscriber-count">' + initialSubscribers + '</span> subscribers and <span class="view-count">' + initialViews + '</span> views.';
-    const plainDesc = "Well, across two channel's I've amassed subscribers and views.";
-    descEl.textContent = "";
-    let dIndex = 0;
-    const descInterval = setInterval(() => {
-      descEl.textContent += plainDesc.charAt(dIndex);
-      dIndex++;
-      if (dIndex === plainDesc.length) {
-        clearInterval(descInterval);
-        descEl.innerHTML = finalDescHTML;
-        // Start the counters
-        subscriberInterval = setInterval(() => {
-          subscriberCount++;
-          document.querySelector('.subscriber-count').textContent = subscriberCount.toLocaleString();
-        }, 5000);
-        viewInterval = setInterval(() => {
-          viewCount++;
-          document.querySelector('.view-count').textContent = viewCount.toLocaleString();
-        }, 2000);
-      }
-    }, 60);  // Slower interval
-  }
 });

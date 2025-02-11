@@ -123,7 +123,7 @@ body {
   width: max-content;
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--gallery-gap); /* Added gap between the two .inner containers */
+  gap: var(--gallery-gap);
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s ease, transform 1s ease;
@@ -132,7 +132,6 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
-/* The inner wrapper holds one set of images; we duplicate it for seamless scrolling */
 .gallery-row .inner {
   display: flex;
   gap: 1rem;
@@ -143,10 +142,43 @@ body {
   border-radius: 12px;
   flex-shrink: 0;
   object-fit: cover;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
-/* Contact Footer */
+/* Keyframes for infinite horizontal scrolling */
+@keyframes scrollRow1 {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+}
+@keyframes scrollRow2 {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+}
+.gallery-row.scroll.row-1 {
+  animation: scrollRow1 90s linear infinite;
+}
+.gallery-row.scroll.row-2 {
+  animation: scrollRow2 120s linear infinite;
+}
+
+/* SPACERS */
+.spacer {
+  height: 25px;
+}
+.space2 {
+  height: 25px;
+}
+
+/* SCROLLING IMAGES HOVER EFFECT */
+.gallery-row img {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.gallery-row img:hover {
+  opacity: 1;
+}
+
+/* CONTACT FOOTER */
 .contact-section {
   width: 100%;
   background-color: var(--navy-blue);
@@ -205,7 +237,6 @@ body {
   z-index: 1000;
   transition: all 1.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-/* Fade-out for intro container */
 .intro-container.fade-out {
   opacity: 0;
   transform: scale(1.05) translateY(-20px);
@@ -291,74 +322,59 @@ body {
   align-items: center;
   border-bottom: 2px solid rgba(26, 43, 76, 0.1);
 }
-/* Smaller guided tour about text */
-.tour-container .about-text {
-  font-size: 1.4rem;
-  line-height: 1.8;
+
+/* NEW: Tour Slide Styles */
+.tour-slide .tour-title {
+  font-size: 3rem;
+  color: var(--navy-blue);
+  margin-bottom: 1rem;
+}
+.tour-slide .tour-description {
+  font-size: 1.5rem;
+  color: #000;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
   text-align: center;
 }
-.about-text {
-  font-size: 1.8rem;
-  line-height: 2;
-  margin: 0 auto;
-  max-width: 1000px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 1s;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  color: var(--text-dark);
-}
-.about-text.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.scroll-prompt {
-  position: absolute;
-  bottom: 6rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.2rem;
-  color: var(--light-navy);
-  opacity: 0;
-  white-space: nowrap;
-  padding-top: 4rem;
-}
-.scroll-prompt::before {
-  content: '↓';
-  display: block;
-  font-size: 1.5rem;
+
+/* NEW: Results Section */
+.tour-results .results-title {
+  font-size: 3rem;
+  color: var(--navy-blue);
   margin-bottom: 1rem;
-  animation: bounce 2s infinite;
 }
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+.tour-results .results-description {
+  font-size: 1.5rem;
+  color: #000;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
 }
-.tour-media {
-  width: 100%;
-  margin: 2rem 0;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 1s;
-  box-shadow: 0 4px 12px rgba(26, 43, 76, 0.1);
+.tour-results .highlight {
+  color: #000;
 }
-.tour-media.visible {
-  opacity: 1;
-  transform: translateY(0);
+.subscriber-count, .view-count {
+  color: red;
 }
-.placeholder-img {
-  width: 100%;
-  height: 60vh;
-  background-color: var(--light-navy);
-  opacity: 0.1;
-  margin: 1rem 0;
-  border-radius: 8px;
+
+/* NEW: Tour End (Welcome) */
+.tour-end h3 {
+  font-size: 3rem;
+  color: var(--navy-blue);
+  margin-bottom: 1rem;
 }
+.tour-end p {
+  font-size: 1.5rem;
+  color: #000;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  text-align: center;
+}
+
+/* ENTER PORTFOLIO BUTTON (Preserved from your code) */
 .enter-portfolio {
   font-size: 1.2rem;
   padding: 1rem 2rem;
@@ -393,25 +409,86 @@ body {
   color: var(--text-light);
 }
 
-/* Keyframes for infinite horizontal scrolling */
-@keyframes scrollRow1 {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+/* SCROLL PROMPT (Preserved) */
+.scroll-prompt {
+  position: absolute;
+  bottom: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  color: var(--light-navy);
+  opacity: 0;
+  white-space: nowrap;
+  padding-top: 4rem;
 }
-@keyframes scrollRow2 {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+.scroll-prompt::before {
+  content: '↓';
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  animation: bounce 2s infinite;
 }
-.gallery-row.scroll.row-1 {
-  animation: scrollRow1 90s linear infinite;
-}
-.gallery-row.scroll.row-2 {
-  animation: scrollRow2 120s linear infinite;
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
 }
 
-.spacer {
-  height: 25px;
+/* MODAL STYLES FOR ENLARGED IMAGE (Preserved and updated) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: none;
+  transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 2000;
+  overflow: auto;
 }
-.space2 {
-  height: 25px;
+.modal-overlay.visible {
+  opacity: 1;
+  transform: none;
+}
+.modal-content {
+  width: 60%;
+  max-width: 60%;
+  margin: auto;
+  animation: fadeInUp 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modal-image-wrapper {
+  width: 100%;
+  height: calc(80vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.modal-image-wrapper img {
+  max-height: 100%;
+  width: auto;
+  border-radius: 12px;
+  display: block;
+}
+/* UPDATED Close Button */
+.modal-close {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 2px solid var(--text-light);
+  color: var(--text-light);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.modal-close:hover {
+  background: var(--text-light);
+  color: var(--navy-blue);
 }
