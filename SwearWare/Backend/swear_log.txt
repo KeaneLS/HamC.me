@@ -1,0 +1,25 @@
+Webhook data: {'swear': True, 'word': 'shit'}
+Webhook data: {'swear': True, 'word': 'shit'}
+Webhook data: {'swear': True, 'word': 'fuck'}
+Webhook data: {'swear': True, 'word': 'fuck'}
+Webhook data: {'swear': True, 'word': 'fuck'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'banana'}
+Webhook data: {'swear': True, 'word': 'cherry'}
+Webhook data: {'swear': True, 'word': 'damn'}
+Webhook data: {'swear': True, 'word': 'damn'}
+Webhook data: {'swear': True, 'word': 'fuck'}
+Webhook data: {'swear': True, 'word': 'fuck'}
+Webhook data: {'swear': True, 'word': 'fuck'}
+Webhook data: {'swear': True, 'word': 'hell'}
+Webhook data: shit
+, S3 link: swear_context_2024-12-19_20-48-23.wavWebhook data: shit
+, S3 link: swear_context_2024-12-19_20-49-50.wavWebhook data: shit, S3 link: swear_context_2024-12-19_20-51-24.wav
+Webhook data: shit, S3 link: swear_context_2024-12-19_20-51-49.wav
+Webhook data: shit  S3 link: swear_context_2024-12-19_20-54-02.wav
