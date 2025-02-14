@@ -419,7 +419,7 @@ const Home: React.FC = () => {
               <h2 className="tour-title">Endgame</h2>
               <img src="/win.jpg" alt="Endgame" className="tour-slide-image" />
               <p className="tour-description">
-                I did it, I found my modern style! Of course I'm always open to learning more and making my thumbnails even better, but this general style has stuck with me for quite some time, and has certainly performed the best on Youtube. I render <strong className="highlight-blue">3D images</strong> of Minecraft gameplay with <strong className="highlight-blue">Replaymod</strong> via <strong className="highlight-blue">Fabric</strong> and upscale them through <strong className="highlight-blue">FFmpeg</strong> for the most optimal Youtube thumbnail quality. Then I apply a series of blending effects in <strong className="highlight-blue">Photoshop</strong> and make any further adjustments in <strong className="highlight-blue">Paint.NET</strong>. I can confidently say that nowadays, it isn't just simple screenshots anymore!
+                Voila—my modern style! Nowadays, I render <strong className="highlight-blue">3D images</strong> of Minecraft gameplay with <strong className="highlight-blue">Replaymod</strong> via <strong className="highlight-blue">Fabric</strong> and upscale them through <strong className="highlight-blue">FFmpeg</strong> for the most optimal YouTube thumbnail quality. Then I apply a series of blending effects in <strong className="highlight-blue">Photoshop</strong> and make any further adjustments in <strong className="highlight-blue">Paint.NET</strong>. I can confidently say that today, it isn't just simple screenshots anymore!
               </p>
             </div>
           </section>
@@ -501,10 +501,10 @@ const Home: React.FC = () => {
             <h2>Contact Me</h2>
             <div className="contact-info">
               <p>kleeshan@uwaterloo.ca</p>
-              <p>Youtube Channels:</p>
+              <p>YouTube Channels:</p>
               <div className="social-links">
-                <a href="https://www.youtube.com/@HamCOsu" target="_blank" className="social-link">Main Channel</a>
-                <a href="https://www.youtube.com/@HamCUHC" target="_blank" className="social-link">Second Channel</a>
+                <a href="https://www.YouTube.com/@HamCOsu" target="_blank" className="social-link">Main Channel</a>
+                <a href="https://www.YouTube.com/@HamCUHC" target="_blank" className="social-link">Second Channel</a>
               </div>
             </div>
           </footer>
